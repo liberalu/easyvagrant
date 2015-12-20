@@ -1,5 +1,4 @@
 *.sh
-puppet/modules/*
 puppet/.librarian/
 puppet/.tmp/
 puppet/Puppetfile.lock
