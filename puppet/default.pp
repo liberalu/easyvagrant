@@ -45,8 +45,16 @@ apache::vhost { 'webpage.local.dev':
 
 ###### MySQL service ######
 
+$override_options = {
+  'mysqld' => {
+    'general_log_file' => '/var/log/mysql/general.log',
+    'general_log' => '1'
+  }
+}
+
 class { 'mysql::server':
     root_password => 'pass',
+    override_options => $override_options
 }
 
 
@@ -101,24 +109,81 @@ exec { 'phpmyadmin_perission':
 ###### PHP service ######
 
 class { 'php':
-      require  => Exec['apt-get update'],
+          require  => Exec['apt-get update'],
+    }
+
+    $phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
+
+    php::module { $phpModules: }
+    php::conf { 'php.ini-cli':
+        path => '/etc/php5/cli/php.ini',
+    }
+
+    php::ini { 'php':
+        value   => [
+            'date.timezone = "Europe/Vilnius"',
+            'xdebug.profiler_enable=0',
+            ],
+        target  => 'php.ini',
+        service => 'apache2',
+    }
+
+##### rtail service #####
+
+exec { "add_node":
+    command => "curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -",
+    require => Exec["apt-get update"]
 }
 
-$phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
-
-php::module { $phpModules: }
-php::conf { 'php.ini-cli':
-    path => '/etc/php5/cli/php.ini',
+package { "nodejs" :
+    install_options => ["-y"],
+    require => Exec["add_node"]
 }
 
-php::ini { 'php':
-    value   => [
-        'date.timezone = "Europe/Vilnius"',
-        'xdebug.profiler_enable=0',
-        ],
-    target  => 'php.ini',
-    service => 'apache2',
+exec { "add_rtail":
+    command => "sudo npm install -g rtail",
+    require => Package["nodejs"]
 }
+
+exec { "run_rtail":
+    command => "rtail-server --web-port 8080 --wh 192.168.33.10 &",
+    require => Exec["add_rtail"]
+}
+
+exec { "add_chmod":
+    command => "sudo chmod -R 0777 /var/log/apache2 /var/log/mysql",
+    require => [
+        Exec["run_rtail"],
+        Service['apache2']
+    ]
+}
+
+exec { "rtail_apache2_access":
+    command => "tail -F /var/log/apache2/webpage.local.dev_access.log | rtail --name 'apache2 access' &",
+    require => Exec["add_chmod"]
+}
+
+exec { "rtail_apache2_errors":
+    command => "tail -F /var/log/apache2/webpage.local.dev_error.log | rtail --name 'apache2 error' &",
+    require => Exec["add_chmod"]
+}
+
+exec { "rtail_mysql_error":
+    command => "tail -F /var/log/mysql/error.log | rtail --name 'mysql error' &",
+    require => [
+        Exec["add_chmod"],
+        Service['mysql']
+    ]
+}
+
+exec { "rtail_mysql_query":
+    command => "tail -F /var/log/mysql/general.log | rtail --name 'mysql query' &",
+        require => [
+        Exec["add_chmod"],
+        Service['mysql']
+    ]
+}
+
 
 ##### Other services #####
 
