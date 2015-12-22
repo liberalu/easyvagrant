@@ -110,23 +110,23 @@ exec { 'phpmyadmin_perission':
 
 class { 'php':
           require  => Exec['apt-get update'],
+          config_file => '/etc/php5/apache2/php.ini'
     }
 
-    $phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
+$phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
 
-    php::module { $phpModules: }
-    php::conf { 'php.ini-cli':
-        path => '/etc/php5/cli/php.ini',
-    }
+php::module { $phpModules: }
 
-    php::ini { 'php':
-        value   => [
-            'date.timezone = "Europe/Vilnius"',
-            'xdebug.profiler_enable=0',
-            ],
-        target  => 'php.ini',
-        service => 'apache2',
-    }
+php::ini { 'php':
+    value   => [
+        'date.timezone = "Europe/Vilnius"',
+        'xdebug.profiler_enable=0',
+        'max_execution_time=60',
+        'post_max_size=32M',
+        ],
+    target  => 'php.ini',
+    service => 'apache2',
+}
 
 ##### rtail service #####
 
