@@ -146,46 +146,6 @@ exec { "add_rtail":
     require => Package["nodejs"]
 }
 
-exec { "run_rtail":
-    command => "rtail-server --web-port 8080 --wh 192.168.33.10 &",
-    require => Exec["add_rtail"]
-}
-
-exec { "add_chmod":
-    command => "sudo chmod -R 0777 /var/log/apache2 /var/log/mysql",
-    require => [
-        Exec["run_rtail"],
-        Service['apache2']
-    ]
-}
-
-exec { "rtail_apache2_access":
-    command => "tail -F /var/log/apache2/webpage.local.dev_access.log | rtail --name 'apache2 access' &",
-    require => Exec["add_chmod"]
-}
-
-exec { "rtail_apache2_errors":
-    command => "tail -F /var/log/apache2/webpage.local.dev_error.log | rtail --name 'apache2 error' &",
-    require => Exec["add_chmod"]
-}
-
-exec { "rtail_mysql_error":
-    command => "tail -F /var/log/mysql/error.log | rtail --name 'mysql error' &",
-    require => [
-        Exec["add_chmod"],
-        Service['mysql']
-    ]
-}
-
-exec { "rtail_mysql_query":
-    command => "tail -F /var/log/mysql/general.log | rtail --name 'mysql query' &",
-        require => [
-        Exec["add_chmod"],
-        Service['mysql']
-    ]
-}
-
-
 ##### Other services #####
 
 package { 'htop':

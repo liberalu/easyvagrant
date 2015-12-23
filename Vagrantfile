@@ -27,4 +27,9 @@ Vagrant.configure(2) do |config|
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "2"]   
     end
+
+    config.trigger.after :up do
+        run_remote "/bin/bash /home/vagrant/bin/run-rtail.sh -s"
+    end
+
 end
