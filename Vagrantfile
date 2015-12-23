@@ -3,6 +3,8 @@ Vagrant.configure(2) do |config|
     #Box    
     config.vm.box = "ubuntu/trusty64"
 
+    config.vm.synced_folder "puppet/scripts/", "/home/vagrant/bin"
+
     config.vm.network "private_network", ip: "192.168.33.10"
 
     # The page url is http://webpage.local.dev    
