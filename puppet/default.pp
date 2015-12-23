@@ -54,7 +54,8 @@ $override_options = {
 
 class { 'mysql::server':
     root_password => 'pass',
-    override_options => $override_options
+    override_options => $override_options,
+    restart => true,
 }
 
 
