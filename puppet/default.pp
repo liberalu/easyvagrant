@@ -20,8 +20,17 @@ exec { 'fish_default':
 
 ##### Apache service #####
 
+
+file { '/vagrant/www':
+    ensure => 'directory',
+    owner  => 'vagrant',
+    group  => 'vagrant',
+    mode   => '0777',
+}
+
 class { 'apache':
     mpm_module => false,
+    require => File['/vagrant/www']
 }
 
 class { 'apache::mod::prefork':
@@ -33,9 +42,9 @@ class { 'apache::mod::rewrite' :}
 
 apache::vhost { 'webpage.local.dev':
     port    => '80',
-    docroot => '/vagrant',
+    docroot => '/vagrant/www',
     directories  => [
-        {   path           => '/vagrant',
+        {   path           => '/vagrant/www',
             allow_override => ['All'],
         },
     docroot_owner => 'vagrant',
@@ -73,7 +82,6 @@ mysql::db { 'database':
     password => 'pass1',
     host     => 'localhost',
     grant    => ['ALL'],
-    sql      => '/vagrant/vagrant/taliaink_wp.sql',
 }
 
 ##### phpinfo(); ######
@@ -152,5 +160,8 @@ package { 'htop':
     ensure => present,
 }
 package { 'php-apc':
+    ensure => present,
+}
+package { 'git':
     ensure => present,
 }
