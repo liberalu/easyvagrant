@@ -128,6 +128,8 @@ php::ini { 'php':
     value   => [
         'date.timezone = "Europe/Vilnius"',
         'xdebug.profiler_enable=0',
+        'xdebug.profiler_enable_trigger=1',
+        'xdebug.profiler_output_name = cachegrind.out.%t.%p',
         'max_execution_time=60',
         'post_max_size=32M',
         ],
@@ -201,3 +203,20 @@ file { '/var/www/git/cache':
     require => Exec['import_git_list'],
 }
 
+
+##### webgrind install #####
+
+apache::vhost { 'webgrind.local.dev':  # define vhost resource
+    port    => '80',
+    docroot => '/var/www/webgrind',
+    directories  => [
+        {   path           => '/var/www/webgrind',
+            allow_override => ['All'],
+        },
+    ],
+}
+
+exec { "import_webgrind":
+    command => "sudo git clone https://github.com/jokkedk/webgrind.git /var/www/webgrind/ --depth=1",
+    require => Package['apache2'],
+}
