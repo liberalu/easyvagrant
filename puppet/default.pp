@@ -23,8 +23,6 @@ exec { 'fish_default':
 
 file { '/vagrant/www':
     ensure => 'directory',
-    owner  => 'vagrant',
-    group  => 'vagrant',
     mode   => '0777',
 }
 
@@ -165,3 +163,41 @@ package { 'php-apc':
 package { 'git':
     ensure => present,
 }
+
+##### git list ######
+
+apache::vhost { 'git.local.dev':  # define vhost resource
+    port    => '80',
+    docroot => '/var/www/git',
+    directories  => [
+        {   path           => '/var/www/git',
+            allow_override => ['All'],
+        },
+    ],
+}
+
+exec { "import_git_list":
+    command => "sudo wget https://s3.amazonaws.com/gitlist/gitlist-0.5.0.tar.gz -P /var/www/git && sudo tar -xvzf /var/www/git/gitlist-0.5.0.tar.gz -C /var/www/git --strip-components=1",
+    require => Package['apache2'],
+}
+
+file { '/var/www/git/config.ini':
+    ensure => file,
+    source => '/var/www/git/config.ini-example',    
+    require => Exec['import_git_list'],
+}
+->
+ini_setting { "git list path":
+    ensure  => present,
+    path    => '/var/www/git/config.ini',
+    section => 'git',
+    setting => 'repositories[]',
+    value   => '/vagrant/',
+}
+
+file { '/var/www/git/cache':
+    ensure => 'directory',
+    mode   => '0777',
+    require => Exec['import_git_list'],
+}
+

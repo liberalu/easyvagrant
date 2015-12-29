@@ -7,4 +7,5 @@ mod 'puppetlabs/apache'
 mod 'puppetlabs/mysql'
 mod 'jlondon/phpmyadmin'
 mod 'example42/php' 
+mod 'puppetlabs/inifile'
  

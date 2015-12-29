@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
     # phpMyAdmin url is http://phpmyadmin.local.dev
     # if you want to get info about php, you can look at http://phpinfo.local.dev
-    config.hostsupdater.aliases = ["phpmyadmin.local.dev", "phpinfo.local.dev",]
+    config.hostsupdater.aliases = ["phpmyadmin.local.dev", "phpinfo.local.dev", "git.local.dev", ]
 
     # puppets folder
     config.librarian_puppet.puppetfile_dir = "puppet"
