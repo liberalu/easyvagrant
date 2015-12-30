@@ -220,3 +220,12 @@ exec { "import_webgrind":
     command => "sudo git clone https://github.com/jokkedk/webgrind.git /var/www/webgrind/ --depth=1",
     require => Package['apache2'],
 }
+
+##### WP CLI install #####
+
+exec { "import_wpcli":
+    command => "sudo wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P /tmp && sudo chmod +x /tmp/wp-cli.phar && sudo mv /tmp/wp-cli.phar /usr/local/bin/wp",
+    require => Package['apache2'],
+}
+
+
