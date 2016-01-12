@@ -165,6 +165,10 @@ package { 'php-apc':
 package { 'git':
     ensure => present,
 }
+package { 'tig':
+    ensure => present,
+}
+
 
 ##### git list ######
 
