@@ -5,3 +5,4 @@ puppet/.tmp/
 puppet/Puppetfile.lock
 .vagrant/
 *~
+puppet/modules/

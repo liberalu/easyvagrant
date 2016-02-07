@@ -1,13 +1,22 @@
+# create puppet/modules folder for puppets
+system("
+    if [ #{ARGV[0]} = 'up' ]; then
+        if [ ! -d 'puppet/modules' ] ; then
+            mkdir 'puppet/modules'
+        fi
+    fi
+")
+
 Vagrant.configure(2) do |config|
-    
-    #Box    
+
+    #Box
     config.vm.box = "ubuntu/trusty64"
 
     config.vm.synced_folder "puppet/scripts/", "/home/vagrant/bin"
 
     config.vm.network "private_network", ip: "192.168.33.10"
 
-    # The page url is http://webpage.local.dev    
+    # The page url is http://webpage.local.dev
     config.vm.hostname = "webpage.local.dev"
 
     # phpMyAdmin url is http://phpmyadmin.local.dev
@@ -25,7 +34,7 @@ Vagrant.configure(2) do |config|
     # The guest machine use 2048 MB RAM and 2 CPU cores
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", "2048"]
-        vb.customize ["modifyvm", :id, "--cpus", "2"]   
+        vb.customize ["modifyvm", :id, "--cpus", "2"]
     end
 
     config.trigger.after :up do
