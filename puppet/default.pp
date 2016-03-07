@@ -95,6 +95,20 @@ file { '/var/www/phpinfo/index.php':
   require => Package['apache2'],        # require 'apache2' package before creating
 } 
 
+##### main page ######
+
+apache::vhost { 'main.local.dev':  # define vhost resource
+    port    => '80',
+    docroot => '/var/www/main'
+}
+
+file { '/var/www/phpinfo/index.php':
+  ensure => file,
+  content => '<?php  echo "MAIN"; ?>',
+  require => Package['apache2'],
+} 
+
+
 
 ##### PhpMyAdmin ######
 
