@@ -37,7 +37,9 @@ You can access phpmyadmin directly from [http://webpage.local.dev](http://webpag
 
 ### XDebug and webgrind
 
-You can turn on xdebug only from vagrant SSH. But you can look xdebug generated profile files from http://webgrind.local.dev/.
+Xdebug works. 
+You can profiling by passing the special GET or POST parameter XDEBUG_PROFILE. For example, [http://webpage.local.dev/?XDEBUG_PROFILE](http://webpage.local.dev/?XDEBUG_PROFILE). You can look xdebug generated profile files from http://webgrind.local.dev/.
+Xdebug debuging is configure.
 
 ### Git preview
 

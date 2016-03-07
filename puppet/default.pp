@@ -130,6 +130,8 @@ php::ini { 'php':
         'xdebug.profiler_enable=0',
         'xdebug.profiler_enable_trigger=1',
         'xdebug.profiler_output_name = cachegrind.out.%t.%p',
+        'xdebug.remote_enable = on',
+        'xdebug.remote_connect_back = on'
         'max_execution_time=60',
         'post_max_size=32M',
         ],
