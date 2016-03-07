@@ -26,15 +26,32 @@
 ## Usage
 
 ### MySQL
+
+There are two MySQL accounts:
+1. user: root, pass: pass;
+2. user: user1, pass: pass1.
+
 ### PhpMyadmin
+
+You can access phpmyadmin directly from [http://webpage.local.dev](http://webpage.local.dev) page.
+
 ### XDebug and webgrind
-### Apache
+
+You can turn on xdebug only from vagrant SSH. But you can look xdebug generated profile files from http://webgrind.local.dev/.
+
+### Git preview
+
+You can preview your project git commits from http://git.local.dev/www/.
+
+### Logs
+
+You can view logs from http://192.168.33.10:8080/. There are apache errors and access, mysql errors and access logs. 
 
 ## Links
 
-- [http://webpage.local.dev](http://webpage.local.dev)
-- [http://phpinfo.local.dev](http://phpinfo.local.dev)
-- [http://git.local.dev](http://git.local.dev)
-- [http://webgrind.local.dev](http://webgrind.local.dev)
-- [http://phpmyadmin.local.dev](http://phpmyadmin.local.dev)
-- [http://192.168.33.10:8080](http://192.168.33.10:8080)
+- [http://webpage.local.dev](http://webpage.local.dev) - webiste main page
+- [http://phpinfo.local.dev](http://phpinfo.local.dev) - phpinfo() page
+- [http://git.local.dev](http://git.local.dev) - git review page
+- [http://webgrind.local.dev](http://webgrind.local.dev) - webgrind page
+- [http://phpmyadmin.local.dev](http://phpmyadmin.local.dev) - phpmyadmin page
+- [http://192.168.33.10:8080](http://192.168.33.10:8080) - rtail page
