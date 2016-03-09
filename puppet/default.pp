@@ -45,9 +45,10 @@ apache::vhost { 'webpage.local.dev':
         {   path           => '/vagrant/www',
             allow_override => ['All'],
         },
-    docroot_owner => 'vagrant',
-    docroot_group => 'vagrant',
-  ],
+        docroot_owner => 'vagrant',
+        docroot_group => 'vagrant',
+    ],
+    custom_fragment => 'PHPINIDir /vagrant/',
 }
 
 ###### MySQL service ######
@@ -137,21 +138,6 @@ class { 'php':
 $phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
 
 php::module { $phpModules: }
-
-php::ini { 'php':
-    value   => [
-        'date.timezone = "Europe/Vilnius"',
-        'xdebug.profiler_enable=0',
-        'xdebug.profiler_enable_trigger=1',
-        'xdebug.profiler_output_name = cachegrind.out.%t.%p',
-        'xdebug.remote_enable = on',
-        'xdebug.remote_connect_back = on',
-        'max_execution_time=60',
-        'post_max_size=32M',
-        ],
-    target  => 'php.ini',
-    service => 'apache2',
-}
 
 ##### rtail service #####
 
