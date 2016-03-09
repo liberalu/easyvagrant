@@ -93,7 +93,7 @@ file { '/var/www/phpinfo/index.php':
   ensure => file,
   content => '<?php  phpinfo(); ?>',    # phpinfo code
   require => Package['apache2'],        # require 'apache2' package before creating
-} 
+}
 
 ##### main page ######
 
@@ -102,11 +102,11 @@ apache::vhost { 'main.local.dev':  # define vhost resource
     docroot => '/var/www/main'
 }
 
-file { '/var/www/phpinfo/index.php':
+file { '/var/www/main/index.php':
   ensure => file,
   content => '<?php  echo "MAIN"; ?>',
   require => Package['apache2'],
-} 
+}
 
 
 
@@ -120,8 +120,8 @@ phpmyadmin::vhost { 'phpmyadmin.local.dev':
     vhost_enabled => true,
     priority      => '30',
     docroot       => $phpmyadmin::params::doc_path,
-} -> 
-# Trick to change permission 
+} ->
+# Trick to change permission
 exec { 'phpmyadmin_perission':
     command => 'sudo sed -i "s/Require local/#Require local/g" /etc/apache2/conf.d/phpmyadmin.conf; sudo sed -i "s/Require ip/#Require ip/g" /etc/apache2/conf.d/phpmyadmin.conf;sudo service apache2 restart;',
 }
@@ -131,7 +131,7 @@ exec { 'phpmyadmin_perission':
 
 class { 'php':
           require  => Exec['apt-get update'],
-          config_file => '/etc/php5/apache2/php.ini'
+          config_file => '/vagrant/php.ini'
     }
 
 $phpModules = [ 'imagick', 'xdebug', 'curl', 'mysql', 'cli', 'intl', 'mcrypt', 'memcache']
@@ -205,7 +205,7 @@ exec { "import_git_list":
 
 file { '/var/www/git/config.ini':
     ensure => file,
-    source => '/var/www/git/config.ini-example',    
+    source => '/var/www/git/config.ini-example',
     require => Exec['import_git_list'],
 }
 ->
@@ -247,5 +247,3 @@ exec { "import_wpcli":
     command => "sudo wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P /tmp && sudo chmod +x /tmp/wp-cli.phar && sudo mv /tmp/wp-cli.phar /usr/local/bin/wp",
     require => Package['apache2'],
 }
-
-
