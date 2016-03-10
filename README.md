@@ -49,6 +49,10 @@ You can preview your project git commits from http://git.local.dev/www/.
 
 You can view logs from http://192.168.33.10:8080/. There are apache errors and access, mysql errors and access logs. 
 
+### PHP
+
+You can change php.ini file in vagarnt root directory. Do not forgot restart apache service.
+
 ## Links
 
 - [http://webpage.local.dev](http://webpage.local.dev) - webiste main page
