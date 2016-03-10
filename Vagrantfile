@@ -41,4 +41,6 @@ Vagrant.configure(2) do |config|
         run_remote "/bin/bash /home/vagrant/bin/run-rtail.sh -s"
     end
 
+    config.vm.provision "file", source: "./puppet/scripts/index.php", destination: "/var/www/main/index.php"
+
 end

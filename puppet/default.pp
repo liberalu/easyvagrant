@@ -105,8 +105,9 @@ apache::vhost { 'main.local.dev':  # define vhost resource
 
 file { '/var/www/main/index.php':
   ensure => file,
-  content => '<?php  echo "MAIN"; ?>',
+  content => '<?php  echo "Something is going wrong"; ?>',
   require => Package['apache2'],
+  mode    => '0777',
 }
 
 
