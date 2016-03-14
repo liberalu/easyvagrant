@@ -171,6 +171,9 @@ package { 'git':
 package { 'tig':
     ensure => present,
 }
+package { 'sendmail':
+    ensure => present,
+}
 
 
 ##### git list ######
